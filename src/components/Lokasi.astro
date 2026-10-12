@@ -1,0 +1,112 @@
+---
+import { Icon } from 'astro-icon/components';
+import { site } from '../data/site';
+---
+
+<section id="lokasi" class="bg-paper py-20 md:py-28">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+    <div>
+      <h2 data-pop class="sticker-text text-[clamp(2.3rem,5.5vw,4rem)]">Yuk mampir, sayang</h2>
+      <p data-pop style="--d:120ms" class="mt-4 max-w-md text-lg leading-relaxed text-ink/80">
+        Kami ada di deretan Ruko Bumi Asri, Cisaat. Tinggal cari bangunan biru dengan bau Indomie yang lagi dimasak.
+      </p>
+
+      <dl class="mt-8 space-y-5" data-pop-stagger>
+        <div class="flex gap-4" data-pop>
+          <dt><Icon name="ri:map-pin-2-fill" class="mt-0.5 h-6 w-6 text-maroon" aria-label="Alamat" /></dt>
+          <dd>
+            <p class="font-bold text-navy">{site.address}</p>
+            <p class="text-ink/70">{site.area}</p>
+          </dd>
+        </div>
+        <div class="flex gap-4" data-pop>
+          <dt><Icon name="ri:time-line" class="mt-0.5 h-6 w-6 text-maroon" aria-label="Jam buka" /></dt>
+          <dd>
+            <p class="font-bold text-navy">Buka tiap hari</p>
+            <p class="text-ink/70">{site.hours}</p>
+          </dd>
+        </div>
+        <div class="flex gap-4" data-pop>
+          <dt><Icon name="ri:phone-fill" class="mt-0.5 h-6 w-6 text-maroon" aria-label="Telepon" /></dt>
+          <dd>
+            <a href={site.whatsapp} target="_blank" rel="noopener" class="font-bold text-navy hover:underline">{site.phone}</a>
+            <p class="text-ink/70">WhatsApp untuk pesan atau tanya-tanya</p>
+          </dd>
+        </div>
+      </dl>
+
+      <div class="mt-9 flex flex-wrap gap-3" data-pop>
+        <a href={site.mapsUrl} target="_blank" rel="noopener" class="btn btn-primary">
+          <Icon name="ri:direction-line" class="h-5 w-5" aria-hidden="true" />
+          Buka di Google Maps
+        </a>
+        <button type="button" class="btn btn-ghost cursor-pointer" data-share>
+          <Icon name="ri:share-forward-line" class="h-5 w-5" aria-hidden="true" />
+          <span data-share-label>Ajak teman ke sini</span>
+        </button>
+      </div>
+    </div>
+
+    <div>
+      <div class="overflow-hidden rounded-[2rem] border-[3px] border-navy bg-white" data-pop>
+        <iframe
+          title="Peta lokasi Warkop Amani"
+          src={site.mapsEmbed}
+          class="block aspect-[4/3] w-full"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+
+      <!-- Same address bar that sits at the bottom of every Warkop Amani post -->
+      <div data-pop style="--d:150ms" class="mt-5 flex flex-col overflow-hidden rounded-2xl bg-maroon text-paper sm:flex-row">
+        <a
+          href={site.mapsUrl}
+          target="_blank"
+          rel="noopener"
+          class="flex flex-1 items-center gap-3 px-5 py-4 text-sm leading-snug font-bold hover:bg-maroon-deep"
+        >
+          <Icon name="ri:map-pin-line" class="h-6 w-6 shrink-0" aria-hidden="true" />
+          Jl. Cikiray–Cijambu Ruko Bumi Asri No A6, Cisaat, Sukabumi
+        </a>
+        <a
+          href={site.whatsapp}
+          target="_blank"
+          rel="noopener"
+          class="flex items-center gap-3 border-t-2 border-maroon-deep bg-maroon-deep/40 px-5 py-4 text-lg font-extrabold hover:bg-maroon-deep sm:border-t-0 sm:border-l-2"
+        >
+          <span class="grid h-8 w-8 place-items-center rounded-full border-2 border-paper">
+            <Icon name="ri:phone-fill" class="h-4 w-4" aria-hidden="true" />
+          </span>
+          {site.phone}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // "Tag temanmu yang mau kamu ajak kesini", as a share button.
+  const btn = document.querySelector<HTMLButtonElement>('[data-share]');
+  const label = document.querySelector<HTMLElement>('[data-share-label]');
+  btn?.addEventListener('click', async () => {
+    const data = {
+      title: 'Warkop Amani',
+      text: 'Yuk ke Warkop Amani, Ruko Bumi Asri A6, Cisaat. Menu mulai 5rban!',
+      url: location.href,
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(data);
+        return;
+      }
+      await navigator.clipboard.writeText(`${data.text} ${data.url}`);
+      if (label) {
+        label.textContent = 'Link disalin, tinggal kirim';
+        setTimeout(() => (label.textContent = 'Ajak teman ke sini'), 2500);
+      }
+    } catch {
+      // Share sheet dismissed; nothing to do.
+    }
+  });
+</script>

@@ -1,0 +1,73 @@
+---
+import { Icon } from 'astro-icon/components';
+import Logo from './Logo.astro';
+import Sticker from './Sticker.astro';
+import Delivery from './Delivery.astro';
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="relative overflow-hidden bg-cream text-ink">
+  <div class="checker h-10 border-b-[3px] border-navy" aria-hidden="true"></div>
+
+  <div class="relative">
+    <div class="grid-paper absolute inset-0 opacity-40 mix-blend-multiply" aria-hidden="true"></div>
+    <div class="halftone pointer-events-none absolute -right-24 -bottom-24 h-80 w-80 rounded-full text-yolk/60" aria-hidden="true"></div>
+    <div class="halftone pointer-events-none absolute -top-16 -left-20 h-56 w-56 rounded-full text-wall/40" aria-hidden="true"></div>
+    <Sticker kind="kopisaset" class="absolute top-10 right-[6%] hidden w-14 rotate-12 md:block" />
+    <Sticker kind="dimsum" class="absolute right-[18%] bottom-24 hidden w-16 -rotate-6 lg:block" />
+
+    <div class="relative mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.3fr_1fr_1fr]">
+      <div class="max-w-sm">
+        <Logo class="h-28" />
+        <p class="mt-5 leading-relaxed font-medium text-ink/80">
+          {site.tagline}. Kerja kelar, ngopi, makan, cerita. Buka tiap hari {site.hours}.
+        </p>
+        <p class="mt-5 text-sm font-bold text-navy">Pesan antar juga bisa:</p>
+        <Delivery class="mt-2" />
+      </div>
+
+      <nav aria-label="Navigasi footer">
+        <p class="font-display text-xl text-maroon">Jalan-jalan</p>
+        <ul class="mt-3 flex flex-col gap-2 font-semibold text-navy">
+          {
+            site.nav.map((l) => (
+              <li>
+                <a href={l.href} class="decoration-2 underline-offset-4 hover:underline">
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div>
+        <p class="font-display text-xl text-maroon">Main ke sosmed</p>
+        <ul class="mt-3 flex flex-col gap-3" aria-label="Media sosial">
+          {
+            site.socials.map((s) => (
+              <li>
+                <a href={s.href} target="_blank" rel="noopener" class="inline-flex items-center gap-3 font-semibold text-navy hover:text-maroon">
+                  <span class="grid h-9 w-9 place-items-center rounded-full bg-navy text-paper">
+                    <Icon name={s.icon} class="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <span>
+                    {s.label} <span class="text-ink/60">{s.handle}</span>
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative border-t-[3px] border-navy bg-paper">
+    <p class="mx-auto max-w-6xl px-4 py-5 text-sm font-semibold text-ink/65 sm:px-6">
+      &copy; {year} Warkop Amani, Cisaat, Sukabumi.
+    </p>
+  </div>
+</footer>

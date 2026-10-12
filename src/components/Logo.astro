@@ -1,0 +1,16 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = 'h-14' } = Astro.props;
+---
+
+<a href="/" class="group inline-flex shrink-0" aria-label="Warkop Amani, ke beranda">
+  <img
+    src="/logo-sm.webp"
+    width="221"
+    height="240"
+    alt=""
+    class:list={['w-auto transition-transform duration-200 group-hover:-rotate-3', className]}
+  />
+</a>

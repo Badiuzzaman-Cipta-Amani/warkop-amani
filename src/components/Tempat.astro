@@ -1,0 +1,48 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const things = [
+  { icon: 'ri:wifi-line', title: 'Nugas sampai kelar', body: 'Bawa laptop, pesan kopi, kerjain pelan-pelan.', r: '-2deg' },
+  { icon: 'ri:camera-3-line', title: 'Photobox Snap Z', body: 'Dua strip foto buat kenang-kenangan bareng bestie.', r: '1.5deg' },
+  { icon: 'ri:music-2-line', title: 'Akustikan santai', body: 'Kadang ada gitar, kadang ada yang nyanyi bareng.', r: '-1deg' },
+  { icon: 'ri:gamepad-line', title: 'Mabar & turnamen ML', body: 'Ajak squad, push rank, atau ikut lomba di sini.', r: '2deg' },
+  { icon: 'ri:group-line', title: 'Tempatnya luas', body: 'Muat buat rame-rame, keluarga, atau berdua aja.', r: '-1.5deg' },
+];
+---
+
+<section id="tempat" class="corrugated relative py-20 md:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <h2 data-pop class="sticker-text max-w-2xl text-[clamp(2.3rem,5.5vw,4rem)]">Bukan cuma tempat ngopi</h2>
+    <p data-pop style="--d:120ms" class="mt-4 max-w-xl text-lg leading-relaxed font-semibold text-white [text-shadow:0_1px_2px_rgb(29_58_110_/_0.5)]">
+      Mau nugas, foto-foto, mabar, atau sekadar cerita sehabis kerja, ada tempatnya.
+    </p>
+
+    <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-pop-stagger>
+      {
+        things.map((t) => (
+          <li
+            data-pop
+            class="flex items-start gap-4 rounded-3xl bg-paper p-5 shadow-[0_6px_0_rgb(29_58_110_/_0.35)]"
+            style={`rotate:${t.r}`}
+          >
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-maroon text-paper">
+              <Icon name={t.icon} class="h-6 w-6" aria-hidden="true" />
+            </span>
+            <div>
+              <h3 class="text-lg font-extrabold text-navy">{t.title}</h3>
+              <p class="mt-1 text-[0.95rem] leading-snug text-ink/75">{t.body}</p>
+            </div>
+          </li>
+        ))
+      }
+      <li data-pop class="sm:col-span-2 lg:col-span-1" style="rotate:1deg">
+        <figure class="h-full rounded-3xl bg-navy p-6 text-paper shadow-[0_6px_0_rgb(29_58_110_/_0.35)]">
+          <blockquote class="font-display text-[1.45rem] leading-tight">
+            Capek itu wajar, kok. Jangan lupa beri ruang untuk dirimu sendiri beristirahat sejenak.
+          </blockquote>
+          <figcaption class="mt-3 text-sm font-semibold text-paper/70">Dari kami di Warkop Amani</figcaption>
+        </figure>
+      </li>
+    </ul>
+  </div>
+</section>

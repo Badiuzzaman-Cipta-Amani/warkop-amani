@@ -1,0 +1,113 @@
+---
+import { Icon } from 'astro-icon/components';
+import Sticker from './Sticker.astro';
+import Delivery from './Delivery.astro';
+import MenuPeek from './MenuPeek.astro';
+import { menu, formatK } from '../data/menu';
+import { site } from '../data/site';
+
+interface Props {
+  // The /menu page lists everything; the home page shows a taste of each group.
+  full?: boolean;
+}
+const { full = false } = Astro.props;
+const groups = full ? menu : menu.map((g) => ({ ...g, items: g.items.slice(0, 4) }));
+---
+
+<section id="menu" class="relative bg-paper py-20 md:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    {
+      !full && (
+        <div class="max-w-2xl" data-pop>
+          <h2 class="sticker-text text-[clamp(2.3rem,5.5vw,4rem)]">Emang ada warkop yang menunya mulai 5rban?</h2>
+          <p class="mt-4 text-lg leading-relaxed text-ink/80">
+            Ada, di sini. Dari mie goreng buat ganjel perut sampai butter rice katsu buat yang laper beneran.
+          </p>
+        </div>
+      )
+    }
+
+    <div class:list={['relative', !full && 'mt-12']} data-pop>
+      <Sticker kind="bowl" class="absolute -top-10 -right-2 z-10 w-20 rotate-12 md:w-28" data-pop="spin" style="--d:350ms" />
+      <Sticker kind="matcha" class="absolute -bottom-8 -left-3 z-10 w-16 -rotate-12 md:w-20" data-pop="spin" style="--d:500ms" />
+
+      <div class="overflow-hidden rounded-[2rem] border-[3px] border-maroon bg-white">
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-maroon px-6 py-4 text-paper md:px-10">
+          <p class="font-display text-2xl tracking-wide">Our menu</p>
+          <p class="flex items-center gap-2 text-sm font-semibold opacity-90 md:pr-24">
+            <Icon name="ri:cursor-line" class="hidden h-4 w-4 [@media(hover:hover)]:block" aria-hidden="true" />
+            <span class="[@media(hover:hover)]:hidden">Ketuk menunya buat lihat fotonya</span>
+            <span class="hidden [@media(hover:hover)]:inline">Arahkan kursor ke menu buat lihat fotonya</span>
+          </p>
+        </div>
+
+        <div class="grid gap-x-14 gap-y-10 px-6 py-10 md:grid-cols-2 md:px-10" data-pop-stagger data-menu-board>
+          {
+            groups.map((group) => (
+              <div data-pop id={full ? group.id : undefined} class="scroll-mt-28">
+                <h3 class="font-display text-[1.6rem] text-navy">{group.title}</h3>
+                <ul class="mt-4 space-y-1">
+                  {group.items.map((item) => (
+                    <li
+                      class="-mx-3 rounded-xl px-3 py-1.5 transition-colors data-photo:cursor-zoom-in data-photo:hover:bg-paper data-photo:focus-visible:bg-paper"
+                      data-photo={item.photo && `/menu/${item.photo}.webp`}
+                      data-name={item.name}
+                      tabindex={item.photo ? 0 : undefined}
+                    >
+                      <div class="flex items-baseline gap-3">
+                        <p class="min-w-0 font-bold">
+                          {item.name}
+                          {item.note && (
+                            <span class="ml-1.5 rounded-full bg-yolk px-2 py-0.5 align-middle text-xs font-bold whitespace-nowrap text-ink">
+                              {item.note}
+                            </span>
+                          )}
+                        </p>
+                        <span class="mb-1.5 flex-1 border-b-2 border-dotted border-grid" aria-hidden="true" />
+                        <span class="shrink-0 text-right whitespace-nowrap">
+                          {item.from && <span class="mr-1 text-xs font-bold text-ink/60">mulai</span>}
+                          <span class="font-display text-xl text-maroon">{formatK(item.price)}</span>
+                          {item.per && <span class="text-xs font-bold text-maroon/80">/{item.per}</span>}
+                        </span>
+                      </div>
+                      {item.desc && <p class="mt-0.5 max-w-[30rem] text-sm leading-snug text-ink/60">{item.desc}</p>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+
+        {
+          !full && (
+            <div class="flex justify-end border-t-2 border-dashed border-grid px-6 py-5 md:px-10">
+              <a href="/menu" class="group inline-flex items-center gap-2 font-extrabold text-navy">
+                Lihat menu lengkap
+                <Icon name="ri:arrow-right-line" class="h-5 w-5 text-maroon transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              </a>
+            </div>
+          )
+        }
+      </div>
+    </div>
+
+    <div class="mt-14 grid gap-6 md:grid-cols-2" data-pop-stagger>
+      <div class="flex flex-col items-start gap-4 rounded-3xl border-2 border-dashed border-navy/30 p-6" data-pop>
+        <p class="font-semibold text-navy">Lagi mager keluar? Pesan dulu, tinggal ambil.</p>
+        <a href={site.whatsapp} target="_blank" rel="noopener" class="btn btn-primary">
+          <Icon name="ri:whatsapp-line" class="h-5 w-5" aria-hidden="true" />
+          Pesan lewat WhatsApp
+        </a>
+      </div>
+      <div class="flex flex-col items-start gap-4 rounded-3xl border-2 border-dashed border-navy/30 p-6" data-pop>
+        <p class="font-semibold text-navy">
+          Mau diantar ke rumah atau kantor? Warkop Amani juga ada di GoFood dan ShopeeFood.
+        </p>
+        <Delivery />
+      </div>
+    </div>
+  </div>
+</section>
+
+<MenuPeek />

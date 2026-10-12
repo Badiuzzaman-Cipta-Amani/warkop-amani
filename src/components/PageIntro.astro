@@ -1,0 +1,19 @@
+---
+import Sticker, { type StickerKind } from './Sticker.astro';
+
+interface Props {
+  title: string;
+  sticker: StickerKind;
+}
+const { title, sticker } = Astro.props;
+---
+
+<section class="grid-paper relative overflow-hidden">
+  <div class="relative mx-auto max-w-6xl px-4 pt-12 pb-14 sm:px-6 md:pt-16">
+    <Sticker kind={sticker} class="pop absolute top-8 right-6 w-20 md:right-10 md:w-28" style="--r:12deg;--d:200ms" />
+    <h1 class="sticker-text max-w-3xl pr-20 text-[clamp(2.7rem,7vw,5rem)]">{title}</h1>
+    <div class="mt-4 max-w-2xl text-lg leading-relaxed text-ink/80">
+      <slot />
+    </div>
+  </div>
+</section>

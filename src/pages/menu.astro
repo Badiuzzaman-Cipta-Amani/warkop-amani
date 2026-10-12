@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import PageIntro from '../components/PageIntro.astro';
+import MenuBoard from '../components/MenuBoard.astro';
+import Footer from '../components/Footer.astro';
+import { menu } from '../data/menu';
+import { site } from '../data/site';
+---
+
+<Layout
+  title={`Menu | ${site.name}`}
+  description="Daftar menu lengkap Warkop Amani: nasi, mie, ramen, camilan, dan minuman mulai 5rban. Ada juga di GoFood dan ShopeeFood."
+>
+  <Header />
+  <main>
+    <PageIntro title="Daftar menu Warkop Amani" sticker="dimsum">
+      <p>Semua yang bisa kamu pesan di sini, dari makan berat sampai teman ngobrol. Arahkan kursor atau ketuk menunya buat lihat fotonya.</p>
+      <nav aria-label="Kategori menu" class="mt-6">
+        <ul class="flex flex-wrap gap-2">
+          {
+            menu.map((g) => (
+              <li>
+                <a href={`#${g.id}`} class="inline-block rounded-full bg-white px-4 py-2 text-sm font-bold text-navy shadow-[inset_0_0_0_2px_var(--color-navy)] hover:bg-navy hover:text-paper">
+                  {g.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </PageIntro>
+    <MenuBoard full />
+  </main>
+  <Footer />
+</Layout>

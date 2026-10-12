@@ -1,0 +1,100 @@
+---
+// The food photo that pops up, slightly askew, when a menu item is hovered or tapped.
+---
+
+<figure
+  data-menu-peek
+  hidden
+  aria-hidden="true"
+  class="pointer-events-none fixed top-0 left-0 z-50 w-44 rounded-md bg-white p-2 pb-1 shadow-[0_14px_30px_-8px_rgb(43_27_29_/_0.45)] sm:w-52"
+>
+  <span class="absolute -top-3 left-1/2 h-6 w-16 -translate-x-1/2 -rotate-3 bg-yolk/80" aria-hidden="true"></span>
+  <div class="grid aspect-square place-items-center overflow-hidden rounded-sm bg-cream">
+    <img data-peek-img alt="" class="h-full w-full object-contain" decoding="async" />
+  </div>
+  <figcaption data-peek-name class="font-display truncate px-1 pt-1.5 text-center text-lg text-navy"></figcaption>
+</figure>
+
+<script>
+  const peek = document.querySelector<HTMLElement>('[data-menu-peek]');
+  const img = peek?.querySelector<HTMLImageElement>('[data-peek-img]');
+  const name = peek?.querySelector<HTMLElement>('[data-peek-name]');
+  const items = [...document.querySelectorAll<HTMLElement>('[data-menu-board] [data-photo]')];
+  const rand = (min: number, max: number) => min + Math.random() * (max - min);
+
+  let active: HTMLElement | null = null;
+  // Where the card sits relative to the pointer; re-rolled on every hover.
+  let offset = { x: 24, y: 16 };
+
+  function place(x: number, y: number) {
+    if (!peek) return;
+    const w = peek.offsetWidth;
+    const h = peek.offsetHeight;
+    let left = x + offset.x;
+    let top = y - h - offset.y;
+    if (left + w > innerWidth - 12) left = x - w - offset.x;
+    if (top < 12) top = y + offset.y + 12;
+    peek.style.translate = `${Math.max(12, left)}px ${Math.min(top, innerHeight - h - 12)}px`;
+  }
+
+  function show(item: HTMLElement, x: number, y: number) {
+    if (!peek || !img || !name) return;
+    active = item;
+    offset = { x: rand(16, 56), y: rand(4, 40) };
+    img.src = item.dataset.photo!;
+    name.textContent = item.dataset.name ?? '';
+    // Sometimes straight, mostly a little crooked, like a photo stuck on the wall.
+    const r = Math.random() < 0.2 ? 0 : rand(4, 11) * (Math.random() < 0.5 ? -1 : 1);
+    peek.style.setProperty('--r', `${r.toFixed(1)}deg`);
+    peek.hidden = false;
+    place(x, y);
+    peek.classList.remove('peek-in');
+    void peek.offsetWidth;
+    peek.classList.add('peek-in');
+  }
+
+  function hide(item?: HTMLElement) {
+    if (!peek || (item && item !== active)) return;
+    active = null;
+    peek.hidden = true;
+  }
+
+  // Keyboard focus and taps anchor the card to the item instead of the pointer.
+  function showAt(item: HTMLElement) {
+    const box = item.getBoundingClientRect();
+    show(item, box.left + Math.min(box.width * 0.55, 260), box.top + 8);
+  }
+
+  for (const item of items) {
+    item.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && show(item, e.clientX, e.clientY));
+    item.addEventListener('pointermove', (e) => e.pointerType === 'mouse' && active === item && place(e.clientX, e.clientY));
+    item.addEventListener('pointerleave', (e) => e.pointerType === 'mouse' && hide(item));
+    item.addEventListener('focus', () => item.matches(':focus-visible') && showAt(item));
+    item.addEventListener('blur', () => hide(item));
+    item.addEventListener('click', (e) => {
+      if ((e as PointerEvent).pointerType === 'mouse') return;
+      if (active === item) hide();
+      else showAt(item);
+    });
+  }
+
+  addEventListener('scroll', () => active && !active.matches(':hover') && hide(), { passive: true });
+  document.addEventListener('keydown', (e) => e.key === 'Escape' && hide());
+  document.addEventListener('pointerdown', (e) => {
+    if (active && !active.contains(e.target as Node)) hide();
+  });
+
+  // Warm the cache once the board is close, so the first hover isn't blank.
+  const board = document.querySelector('[data-menu-board]');
+  if (board && items.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        for (const item of items) new Image().src = item.dataset.photo!;
+      },
+      { rootMargin: '300px' },
+    );
+    io.observe(board);
+  }
+</script>

@@ -1,0 +1,84 @@
+---
+// The Warkop Amani bowl: a smiling mie bowl with egg, naruto and chopsticks.
+interface Props {
+  class?: string;
+  steam?: boolean;
+}
+const { class: className = '', steam = false } = Astro.props;
+const navy = '#1d3a6e';
+---
+
+<svg
+  class={className}
+  viewBox="0 0 260 250"
+  role="img"
+  aria-label="Maskot Warkop Amani: mangkuk mie yang tersenyum"
+  fill="none"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  {
+    steam && (
+      <g class="steam" stroke="#9fb4d6" stroke-width="5">
+        <path d="M70 52c-8-9 8-15 0-24s8-15 0-22" />
+        <path d="M104 46c-8-9 8-15 0-24s8-15 0-22" />
+        <path d="M138 50c-8-9 8-15 0-24s8-15 0-22" />
+      </g>
+    )
+  }
+
+  <!-- noodles -->
+  <path
+    d="M36 126c6-38 44-56 94-54 52-2 88 18 94 54Z"
+    fill="#f7d774"
+    stroke={navy}
+    stroke-width="5"
+  />
+  <g stroke="#dcae3c" stroke-width="4">
+    <path d="M58 112c8-10 16 10 24 0s16 10 24 0" />
+    <path d="M140 116c8-10 16 10 24 0s16 10 24 0" />
+    <path d="M96 92c8-10 16 10 24 0s16 10 24 0" />
+  </g>
+
+  <!-- greens -->
+  <path d="M122 82c-10-14 2-26 14-22-2 12-4 18-14 22Z" fill="#6dbe6a" stroke={navy} stroke-width="4" />
+  <path d="M126 84c14-8 24 2 22 12-12 0-18-4-22-12Z" fill="#8fd28a" stroke={navy} stroke-width="4" />
+
+  <!-- egg -->
+  <ellipse cx="84" cy="100" rx="27" ry="20" fill="#fff" stroke={navy} stroke-width="5" />
+  <circle cx="87" cy="101" r="11" fill="#f4b13e" />
+  <circle cx="83" cy="97" r="3" fill="#fff" stroke="none" />
+
+  <!-- naruto -->
+  <circle cx="176" cy="100" r="17" fill="#fff" stroke={navy} stroke-width="5" />
+  <path d="M176 100c3 0 4-3 2-5s-8-1-8 5 7 10 13 6" stroke="#ef7f95" stroke-width="3.5" />
+
+  <!-- chopsticks -->
+  <g stroke-width="13" stroke={navy}>
+    <path d="M186 14 148 118" />
+    <path d="M214 22 166 122" />
+  </g>
+  <g stroke-width="7">
+    <path d="M186 14 148 118" stroke="#c9864a" />
+    <path d="M214 22 166 122" stroke="#c9864a" />
+  </g>
+
+  <!-- bowl -->
+  <path
+    d="M20 122h220c-2 66-46 104-110 104S22 188 20 122Z"
+    fill="#fff"
+    stroke={navy}
+    stroke-width="6"
+  />
+  <path d="M25 134h210c-.6 5-1.4 9.5-2.6 14H27.6c-1.2-4.5-2-9-2.6-14Z" fill="#8a1c2b" />
+  <path d="M98 226h64l-5 14h-54Z" fill={navy} stroke={navy} stroke-width="5" />
+
+  <!-- face -->
+  <ellipse cx="102" cy="176" rx="8" ry="10" fill={navy} />
+  <ellipse cx="158" cy="176" rx="8" ry="10" fill={navy} />
+  <circle cx="105" cy="172" r="3" fill="#fff" />
+  <circle cx="161" cy="172" r="3" fill="#fff" />
+  <path d="M116 192c8 10 20 10 28 0" stroke={navy} stroke-width="5" />
+  <ellipse cx="80" cy="192" rx="12" ry="6.5" fill="#f49aa0" opacity=".85" />
+  <ellipse cx="180" cy="192" rx="12" ry="6.5" fill="#f49aa0" opacity=".85" />
+</svg>

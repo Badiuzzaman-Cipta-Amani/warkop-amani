@@ -1,23 +1,62 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import '../styles/global.css';
+import { site } from '../data/site';
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${site.name} | ${site.tagline}`,
+  description = 'Warkop ramah di kantong di Cisaat, Sukabumi. Aneka Indomie, nasi, camilan, dan kopi mulai 5rban. Buka setiap hari 09.00–21.00 WIB.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Scroll pop-ins only hide content once we know JS can reveal it again -->
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#fbf7ec" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="id_ID" />
+  </head>
+  <body class="min-h-screen overflow-x-hidden">
+    <slot />
+    <script>
+      // Pop [data-pop] elements in as they scroll into view. Children of a
+      // [data-pop-stagger] parent pop one after another.
+      const targets = document.querySelectorAll<HTMLElement>('[data-pop]');
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            entry.target.classList.add('is-popped');
+            io.unobserve(entry.target);
+          }
+        },
+        { rootMargin: '0px 0px -12% 0px' },
+      );
+      targets.forEach((el) => {
+        const group = el.closest('[data-pop-stagger]');
+        if (group && group !== el && !el.style.getPropertyValue('--d')) {
+          const siblings = [...group.querySelectorAll('[data-pop]')];
+          el.style.setProperty('--d', `${siblings.indexOf(el) * 90}ms`);
+        }
+        io.observe(el);
+      });
+    </script>
+  </body>
+</html>

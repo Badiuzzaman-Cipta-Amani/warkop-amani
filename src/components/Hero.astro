@@ -1,0 +1,269 @@
+---
+import { Icon } from 'astro-icon/components';
+import Sticker, { type StickerKind } from './Sticker.astro';
+import { site } from '../data/site';
+
+const routine = [
+  { label: 'Kerja kelar', icon: 'ri:macbook-line' },
+  { label: 'ngopi', icon: 'ri:cup-line' },
+  { label: 'makan', icon: 'ri:bowl-line' },
+  { label: 'cerita', icon: 'ri:chat-smile-2-line' },
+];
+
+// Everyday warkop food that takes turns popping up around the bowl.
+const foods: StickerKind[] = [
+  'dimsum',
+  'kopi',
+  'gorengan',
+  'egg',
+  'esteh',
+  'rotibakar',
+  'pisang',
+  'kopisaset',
+  'kerupuk',
+  'mie',
+  'sosis',
+];
+
+const slots: { food: StickerKind; class: string; r: string; d: number }[] = [
+  { food: 'dimsum', class: 'top-[2%] left-[0%] w-[24%]', r: '-12deg', d: 250 },
+  { food: 'kopi', class: 'top-[4%] right-[2%] w-[20%]', r: '10deg', d: 380 },
+  { food: 'gorengan', class: 'bottom-[6%] left-[2%] w-[22%]', r: '-6deg', d: 510 },
+  { food: 'egg', class: 'right-[0%] bottom-[10%] w-[21%]', r: '14deg', d: 640 },
+];
+---
+
+<section class="grid-paper relative overflow-hidden">
+  <div
+    class="mx-auto grid max-w-6xl items-center gap-10 px-4 pt-10 pb-16 sm:px-6 md:pt-16 lg:grid-cols-[1.1fr_0.9fr] lg:pb-24"
+  >
+    <div>
+      <!-- A little BUKA / TUTUP sign, like the one hanging on the warkop door -->
+      <div data-hours data-state="unknown" class="group flex items-center gap-4">
+        <div class="sign-swing relative shrink-0 pt-4" aria-hidden="true">
+          <svg class="absolute top-0 left-1/2 h-5 w-14 -translate-x-1/2" viewBox="0 0 56 20" fill="none">
+            <path d="M8 19 28 4l20 15" stroke="#1d3a6e" stroke-width="2" stroke-linecap="round" />
+            <circle cx="28" cy="4" r="3.5" fill="#1d3a6e" />
+          </svg>
+          <span
+            data-sign
+            class="font-display relative grid h-10 min-w-[5.5rem] place-items-center rounded-xl border-[3px] border-navy bg-white px-3 text-xl tracking-wider text-navy uppercase shadow-[0_4px_0_var(--color-navy)] group-data-[state=closed]:bg-maroon group-data-[state=closed]:text-paper group-data-[state=open]:bg-[#3fa34d] group-data-[state=open]:text-white"
+          >
+            <Icon name="ri:time-line" class="h-6 w-6 group-data-[state=closed]:hidden group-data-[state=open]:hidden" />
+            <span class="hidden group-data-[state=open]:inline">Buka</span>
+            <span class="hidden group-data-[state=closed]:inline">Tutup</span>
+          </span>
+          <span class="zzz hidden group-data-[state=closed]:block">
+            <span>z</span><span>z</span><span>z</span>
+          </span>
+        </div>
+
+        <p class="leading-snug">
+          <span class="sr-only" data-hours-sr>Jam buka:</span>
+          <span data-hours-title class="block font-extrabold text-navy">Buka tiap hari</span>
+          <span data-hours-detail class="block text-sm font-semibold text-ink/70">{site.hours}</span>
+        </p>
+      </div>
+
+      <h1 class="sticker-text mt-5 text-[clamp(2.7rem,7vw,4.7rem)]">
+        Tempat kerja dan nongkrong kamu
+      </h1>
+
+      <ol class="mt-6 flex flex-wrap items-center gap-x-1.5 gap-y-2 text-navy" aria-label="Rutinitas di Warkop Amani">
+        {
+          routine.map((step, i) => (
+            <li class="flex items-center gap-1.5">
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-navy px-3 py-1.5 text-sm font-bold text-paper">
+                <Icon name={step.icon} class="h-4 w-4" aria-hidden="true" />
+                {step.label}
+              </span>
+              {i < routine.length - 1 && <Icon name="ri:arrow-right-line" class="h-5 w-5 text-maroon" aria-hidden="true" />}
+            </li>
+          ))
+        }
+      </ol>
+
+      <p class="mt-6 max-w-[34rem] text-lg leading-relaxed text-ink/85">
+        Beneran warkop ramah di kantong. Aneka Indomie, nasi, camilan, sampai kopi saset yang digantung, semua mulai{" "}
+        <strong class="font-display text-xl font-normal text-maroon">5rban</strong>.
+      </p>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/menu" class="btn btn-primary">
+          <Icon name="ri:restaurant-2-line" class="h-5 w-5" aria-hidden="true" />
+          Lihat menu
+        </a>
+        <a href={site.mapsUrl} target="_blank" rel="noopener" class="btn btn-ghost">
+          <Icon name="ri:direction-line" class="h-5 w-5" aria-hidden="true" />
+          Arahkan ke Warkop Amani
+        </a>
+      </div>
+    </div>
+
+    <div class="relative mx-auto aspect-square w-full max-w-[26rem]" data-food-ring>
+      <div class="absolute inset-[8%] rounded-full bg-white shadow-[0_0_0_10px_var(--color-paper),0_0_0_12px_var(--color-grid)]"></div>
+
+      <div class="pop absolute inset-[13%] flex items-center" style="--d:80ms">
+        <div class="bowl-bob relative w-full">
+          <svg class="steam absolute top-[-14%] left-[12%] w-[34%]" viewBox="56 0 96 56" fill="none" aria-hidden="true">
+            <g stroke="#9fb4d6" stroke-width="5" stroke-linecap="round">
+              <path d="M70 52c-8-9 8-15 0-24s8-15 0-22" />
+              <path d="M104 46c-8-9 8-15 0-24s8-15 0-22" />
+              <path d="M138 50c-8-9 8-15 0-24s8-15 0-22" />
+            </g>
+          </svg>
+          <img
+            src="/logo-bowl.webp"
+            width="1150"
+            height="1000"
+            alt="Maskot Warkop Amani: mangkuk mie yang tersenyum"
+            class="relative h-auto w-full"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+      </div>
+
+      {
+        slots.map((slot) => (
+          <div
+            data-food-slot
+            data-food={slot.food}
+            class:list={['absolute aspect-square', slot.class]}
+            style={`--r:${slot.r}`}
+          >
+            <Sticker kind={slot.food} class="pop absolute inset-0 h-full w-full" style={`--d:${slot.d}ms`} />
+          </div>
+        ))
+      }
+
+      <p
+        class="pop font-display absolute bottom-[-2%] left-1/2 -translate-x-1/2 rounded-full bg-maroon px-4 py-1 text-sm tracking-wider text-paper"
+        style="--d:760ms"
+      >
+        Est 2025
+      </p>
+
+      {
+        foods.map((food) => (
+          <template data-food-tpl={food}>
+            <Sticker kind={food} class="absolute inset-0 h-full w-full" />
+          </template>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  // Flip the BUKA / TUTUP sign to match the time in WIB (UTC+7).
+  const OPEN = 9 * 60;
+  const CLOSE = 21 * 60;
+  const hours = document.querySelector<HTMLElement>('[data-hours]');
+  const sign = document.querySelector<HTMLElement>('[data-sign]');
+  const title = document.querySelector<HTMLElement>('[data-hours-title]');
+  const detail = document.querySelector<HTMLElement>('[data-hours-detail]');
+  const srLabel = document.querySelector<HTMLElement>('[data-hours-sr]');
+
+  const duration = (mins: number) => {
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    if (!h) return `${m} menit`;
+    return m ? `${h} jam ${m} menit` : `${h} jam`;
+  };
+
+  function readHours() {
+    const now = new Date();
+    const mins = ((now.getUTCHours() + 7) % 24) * 60 + now.getUTCMinutes();
+    if (mins >= OPEN && mins < CLOSE) {
+      const left = CLOSE - mins;
+      return {
+        state: 'open',
+        sr: 'Sekarang buka.',
+        title: left <= 60 ? 'Bentar lagi tutup, buruan!' : 'Lagi buka, sini mampir!',
+        detail: `Sampai 21.00 WIB, masih ${duration(left)} lagi`,
+      };
+    }
+    const until = (OPEN - mins + 1440) % 1440;
+    return {
+      state: 'closed',
+      sr: 'Sekarang tutup.',
+      title: 'Kompornya lagi istirahat',
+      detail: `Buka lagi ${mins < OPEN ? 'pagi ini' : 'besok'} jam 09.00 WIB, ${duration(until)} lagi`,
+    };
+  }
+
+  function render() {
+    if (!hours || !title || !detail) return;
+    const next = readHours();
+    title.textContent = next.title;
+    detail.textContent = next.detail;
+    if (srLabel) srLabel.textContent = next.sr;
+    if (hours.dataset.state === next.state) return;
+
+    // Flip the board edge-on, swap its face, then flip it back.
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!sign || reduce) {
+      hours.dataset.state = next.state;
+      return;
+    }
+    const half = { duration: 180, easing: 'ease-in' };
+    sign.animate([{ transform: 'rotateY(0deg)' }, { transform: 'rotateY(90deg)' }], half).finished.then(() => {
+      hours.dataset.state = next.state;
+      sign.animate([{ transform: 'rotateY(-90deg)' }, { transform: 'rotateY(0deg)' }], {
+        duration: 420,
+        easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+      });
+    });
+  }
+
+  setTimeout(render, 600);
+  setInterval(render, 60_000);
+</script>
+
+<script>
+  // Every few seconds, one food around the bowl pops out and another pops in.
+  const ring = document.querySelector<HTMLElement>('[data-food-ring]');
+  const slots = [...document.querySelectorAll<HTMLElement>('[data-food-slot]')];
+  const templates = new Map(
+    [...document.querySelectorAll<HTMLTemplateElement>('[data-food-tpl]')].map((t) => [t.dataset.foodTpl!, t]),
+  );
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let inView = true;
+  let lastSlot = -1;
+
+  function pick<T>(list: T[]) {
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  function swap() {
+    if (!inView || document.hidden) return;
+    const i = pick(slots.map((_, n) => n).filter((n) => n !== lastSlot));
+    lastSlot = i;
+    const slot = slots[i];
+    const showing = new Set(slots.map((s) => s.dataset.food));
+    const food = pick([...templates.keys()].filter((k) => !showing.has(k)));
+    const next = templates.get(food)?.content.firstElementChild?.cloneNode(true) as SVGElement | undefined;
+    if (!next) return;
+
+    const old = slot.querySelector('svg.pop');
+    if (old) {
+      old.classList.replace('pop', 'pop-out');
+      old.addEventListener('animationend', () => old.remove(), { once: true });
+    }
+    next.classList.add('pop');
+    next.style.setProperty('--d', '160ms');
+    slot.append(next);
+    slot.dataset.food = food;
+  }
+
+  function loop() {
+    swap();
+    setTimeout(loop, 2400 + Math.random() * 2200);
+  }
+
+  if (ring && slots.length && templates.size > slots.length && !reduce) {
+    new IntersectionObserver(([entry]) => (inView = entry.isIntersecting)).observe(ring);
+    setTimeout(loop, 3000);
+  }
+</script>

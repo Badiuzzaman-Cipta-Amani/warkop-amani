@@ -1,0 +1,113 @@
+---
+import { Icon } from 'astro-icon/components';
+import Sticker, { type StickerKind } from './Sticker.astro';
+
+const perks = [
+  { icon: 'ri:camera-3-line', title: 'Langsung cetak', body: 'Pose, cekrek, tunggu sebentar, fotonya keluar.' },
+  { icon: 'ri:file-copy-2-line', title: 'Dua strip foto', body: 'Satu buat kamu, satu buat bestie.' },
+  { icon: 'ri:emotion-laugh-line', title: 'Gaya bebas', body: 'Bareng teman, keluarga, pasangan, atau sendirian.' },
+];
+
+// Mock photo strips: the warkop's food stickers "posing" in each frame.
+type Frame = { bg: string; kind?: StickerKind; r: string };
+const strips: { r: string; d: number; frames: Frame[] }[] = [
+  {
+    r: '-7deg',
+    d: 120,
+    frames: [
+      { bg: 'bg-wall', r: '-8deg' },
+      { bg: 'bg-maroon', kind: 'kopi', r: '10deg' },
+      { bg: 'bg-paper', kind: 'dimsum', r: '-6deg' },
+      { bg: 'bg-navy', kind: 'matcha', r: '8deg' },
+    ],
+  },
+  {
+    r: '6deg',
+    d: 260,
+    frames: [
+      { bg: 'bg-paper', kind: 'esteh', r: '6deg' },
+      { bg: 'bg-navy', r: '4deg' },
+      { bg: 'bg-wall', kind: 'egg', r: '-12deg' },
+      { bg: 'bg-maroon', kind: 'pisang', r: '-4deg' },
+    ],
+  },
+];
+---
+
+<section id="snapz" class="relative overflow-hidden bg-yolk py-20 md:py-28">
+  <div class="halftone pointer-events-none absolute inset-0 text-[#e39a22] opacity-60" aria-hidden="true"></div>
+
+  <div class="relative mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-[1.05fr_0.95fr]">
+    <div>
+      <p data-pop class="inline-flex items-center gap-2 rounded-full bg-navy px-4 py-1.5 text-sm font-bold text-paper">
+        <Icon name="ri:camera-lens-line" class="h-4 w-4" aria-hidden="true" />
+        Photobox di dalam warkop
+      </p>
+      <h2 data-pop style="--d:80ms" class="mt-6">
+        <img src="/snapz.png" width="2164" height="328" alt="Snap Z" class="h-auto w-full max-w-[26rem]" loading="lazy" />
+        <span class="sticker-text mt-4 block text-[clamp(2.1rem,5vw,3.6rem)]">Ngopi dulu, cekrek kemudian</span>
+      </h2>
+      <p data-pop style="--d:160ms" class="mt-5 max-w-xl text-lg leading-relaxed font-medium text-ink/85">
+        Snap Z adalah photobox yang ada langsung di Warkop Amani. Habis makan, sebelum pulang, mampir ke boothnya dan
+        bawa pulang kenang-kenangan bareng orang-orang tersayang.
+      </p>
+
+      <ul class="mt-8 grid gap-3 sm:grid-cols-3" data-pop-stagger>
+        {
+          perks.map((p) => (
+            <li data-pop class="rounded-2xl bg-paper p-4 shadow-[0_5px_0_rgb(138_28_43_/_0.25)]">
+              <Icon name={p.icon} class="h-7 w-7 text-maroon" aria-hidden="true" />
+              <h3 class="mt-2 font-extrabold text-navy">{p.title}</h3>
+              <p class="mt-1 text-sm leading-snug text-ink/75">{p.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div data-pop class="mt-8 flex flex-wrap gap-3">
+        <a href="https://www.instagram.com/p/DYEvAemmYyW/" target="_blank" rel="noopener" class="btn btn-primary">
+          <Icon name="ri:instagram-line" class="h-5 w-5" aria-hidden="true" />
+          Intip keseruan opening day
+        </a>
+        <a href="/#lokasi" class="btn btn-ghost">
+          <Icon name="ri:map-pin-2-line" class="h-5 w-5" aria-hidden="true" />
+          Datang langsung
+        </a>
+      </div>
+    </div>
+
+    <div class="relative mx-auto flex w-full max-w-md justify-center gap-6 py-6 sm:gap-10" aria-hidden="true">
+      <!-- Flash burst behind the strips -->
+      <svg class="absolute top-1/2 left-1/2 w-[120%] -translate-x-1/2 -translate-y-1/2 text-paper/70" viewBox="0 0 200 200">
+        <path
+          fill="currentColor"
+          d="M100 0l12 62 47-42-28 57 64-6-58 28 58 28-64-6 28 57-47-42-12 62-12-62-47 42 28-57-64 6 58-28-58-28 64 6-28-57 47 42z"
+        />
+      </svg>
+
+      {
+        strips.map((strip) => (
+          <div
+            data-pop
+            class="relative w-[42%] max-w-[10.5rem] rounded-sm bg-white p-2.5 pb-0 shadow-[0_18px_30px_-12px_rgb(43_27_29_/_0.5)]"
+            style={`rotate:${strip.r};--d:${strip.d}ms`}
+          >
+            <span class="absolute -top-3 left-1/2 h-6 w-14 -translate-x-1/2 rotate-2 bg-paper/80" />
+            <div class="space-y-2">
+              {strip.frames.map((f) => (
+                <div class:list={['relative grid aspect-[4/3] place-items-center overflow-hidden rounded-[3px]', f.bg]}>
+                  {f.kind ? (
+                    <Sticker kind={f.kind} class="w-[62%]" style={`rotate:${f.r}`} />
+                  ) : (
+                    <img src="/logo-bowl.webp" alt="" class="w-[70%]" style={`rotate:${f.r}`} loading="lazy" />
+                  )}
+                </div>
+              ))}
+            </div>
+            <p class="font-display py-2 text-center text-sm tracking-wider text-navy">SNAP Z × AMANI</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
