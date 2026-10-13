@@ -92,18 +92,19 @@ const groups = full ? menu : menu.map((g) => ({ ...g, items: g.items.slice(0, 4)
       </div>
     </div>
 
-    <div class="mt-14 grid gap-6 md:grid-cols-2" data-pop-stagger>
-      <div class="flex flex-col items-start gap-4 rounded-3xl border-2 border-dashed border-navy/30 p-6" data-pop>
-        <p class="font-semibold text-navy">Lagi mager keluar? Pesan dulu, tinggal ambil.</p>
+    <div
+      class="mt-14 flex flex-col gap-6 rounded-3xl border-2 border-dashed border-navy/30 p-6 md:p-8 lg:flex-row lg:items-center lg:justify-between"
+      data-pop
+    >
+      <div class="max-w-md space-y-1 font-semibold text-navy">
+        <p>Lagi mager keluar? Pesan dulu, tinggal ambil.</p>
+        <p class="text-ink/70">Mau diantar ke rumah atau kantor? Warkop Amani juga ada di GoFood dan ShopeeFood.</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-3 lg:shrink-0">
         <a href={site.whatsapp} target="_blank" rel="noopener" class="btn btn-primary">
           <Icon name="ri:whatsapp-line" class="h-5 w-5" aria-hidden="true" />
           Pesan lewat WhatsApp
         </a>
-      </div>
-      <div class="flex flex-col items-start gap-4 rounded-3xl border-2 border-dashed border-navy/30 p-6" data-pop>
-        <p class="font-semibold text-navy">
-          Mau diantar ke rumah atau kantor? Warkop Amani juga ada di GoFood dan ShopeeFood.
-        </p>
         <Delivery />
       </div>
     </div>

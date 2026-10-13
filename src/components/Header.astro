@@ -7,10 +7,23 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
 <header class="sticky top-0 z-40 border-b-2 border-grid bg-paper/90 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2 sm:px-6">
-    <Logo class="h-14 sm:h-16" />
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+    <!-- Warkop Amani × Snap Z, the photobox inside the warkop -->
+    <div class="flex shrink-0 items-center gap-2 sm:gap-3">
+      <Logo class="h-12 sm:h-14" />
+      <span class="font-display text-2xl leading-none text-maroon" aria-hidden="true">×</span>
+      <a href="/#snapz" class="group shrink-0" aria-label="Snap Z, photobox di Warkop Amani">
+        <img
+          src="/snapz.webp"
+          width="1000"
+          height="152"
+          alt=""
+          class="h-4 w-auto transition-transform duration-200 group-hover:rotate-3 sm:h-5 lg:h-6"
+        />
+      </a>
+    </div>
     <nav aria-label="Navigasi utama" class="hidden md:block">
-      <ul class="flex items-center gap-7 text-[0.95rem] font-semibold text-navy">
+      <ul class="flex items-center gap-5 text-[0.95rem] font-semibold text-navy lg:gap-7">
         {
           site.nav.map((l) => (
             <li>

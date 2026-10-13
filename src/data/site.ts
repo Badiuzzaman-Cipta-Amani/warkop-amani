@@ -10,16 +10,23 @@ export const site = {
     'https://www.google.com/maps/search/?api=1&query=Warkop+Amani+Ruko+Bumi+Asri+Cikiray+Cisaat+Sukabumi',
   mapsEmbed:
     'https://www.google.com/maps?q=Warkop+Amani+Ruko+Bumi+Asri+Cikiray+Cijambu+Cisaat+Sukabumi&output=embed',
-  // Add each store's link to `href` once it's handy; without one the badge is plain text.
+  // `logo` is a file in /public/brands; width/height are its aspect ratio.
   delivery: [
-    { label: 'GoFood', href: '', bg: '#d61f26' },
-    { label: 'ShopeeFood', href: '', bg: '#d73211' },
+    { label: 'GoFood', href: 'https://gofood.link/a/TxUMz2s', logo: '/brands/gofood.svg', width: 308, height: 63 },
+    {
+      label: 'ShopeeFood',
+      href: 'https://shopee.co.id/universal-link/now-food/shop/23031184?deep_and_deferred=1&shareChannel=copy_link',
+      logo: '/brands/shopeefood.svg',
+      width: 19311,
+      height: 3800,
+    },
   ],
   nav: [
     { href: '/menu', label: 'Menu' },
     { href: '/#tempat', label: 'Tempatnya' },
     { href: '/#snapz', label: 'Snap Z' },
-    { href: '/galeri', label: 'Galeri' },
+    // Galeri is hidden for now; uncomment to bring it back (see also <Gallery /> in pages/index.astro).
+    // { href: '/galeri', label: 'Galeri' },
     { href: '/#lokasi', label: 'Lokasi' },
   ],
   socials: [

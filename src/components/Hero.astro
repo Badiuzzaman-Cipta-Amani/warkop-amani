@@ -66,7 +66,7 @@ const slots: { food: StickerKind; class: string; r: string; d: number }[] = [
       </div>
 
       <h1 class="sticker-text mt-5 text-[clamp(2.7rem,7vw,4.7rem)]">
-        Tempat kerja dan nongkrong kamu
+        Your after-work comfort place
       </h1>
 
       <ol class="mt-6 flex flex-wrap items-center gap-x-1.5 gap-y-2 text-navy" aria-label="Rutinitas di Warkop Amani">
@@ -136,6 +136,27 @@ const slots: { food: StickerKind; class: string; r: string; d: number }[] = [
           </div>
         ))
       }
+
+      <!-- A Snap Z photo strip tucked against the plate -->
+      <div
+        class="pop absolute top-[30%] right-[-3%] w-[17%] rounded-[3px] bg-white p-[3%] pb-0 shadow-[0_12px_22px_-10px_rgb(43_27_29_/_0.55)]"
+        style="--r:9deg;--d:880ms"
+        aria-hidden="true"
+      >
+        <span class="absolute -top-2 left-1/2 h-4 w-[70%] -translate-x-1/2 -rotate-3 bg-yolk/80"></span>
+        <div class="space-y-[6%]">
+          <div class="grid aspect-[4/3] place-items-center overflow-hidden rounded-[2px] bg-navy">
+            <img src="/logo-bowl.webp" alt="" class="w-[72%] -rotate-6" />
+          </div>
+          <div class="grid aspect-[4/3] place-items-center overflow-hidden rounded-[2px] bg-maroon">
+            <Sticker kind="kopi" class="w-[58%] rotate-6" />
+          </div>
+          <div class="grid aspect-[4/3] place-items-center overflow-hidden rounded-[2px] bg-wall">
+            <Sticker kind="dimsum" class="w-[62%] -rotate-3" />
+          </div>
+        </div>
+        <img src="/snapz.webp" width="1000" height="152" alt="" class="mx-auto h-auto w-[78%] py-[14%]" />
+      </div>
 
       <p
         class="pop font-display absolute bottom-[-2%] left-1/2 -translate-x-1/2 rounded-full bg-maroon px-4 py-1 text-sm tracking-wider text-paper"

@@ -2,10 +2,11 @@
 import { Icon } from 'astro-icon/components';
 import Sticker from './Sticker.astro';
 
+// Left to right. `label` only shows until Instagram's embed script swaps in the real post.
 const posts = [
-  { id: 'DYmTQZZFC6H', label: 'Di balik layar dapur Warkop Amani' },
-  { id: 'DYEvAemmYyW', label: 'Opening day Warkop Amani x Snap Z Photobox' },
-  { id: 'DcpPUlbE_1f', label: 'Capek itu wajar, kok' },
+  { url: 'https://www.instagram.com/reel/DdFf140h1Mo/', label: 'Reel terbaru Warkop Amani' },
+  { url: 'https://www.instagram.com/p/DYEvAemmYyW/', label: 'Opening day Warkop Amani x Snap Z Photobox' },
+  { url: 'https://www.instagram.com/reel/Dc_L0xtv8HS/', label: 'Reel terbaru Warkop Amani' },
 ];
 ---
 
@@ -28,11 +29,11 @@ const posts = [
         posts.map((p) => (
           <blockquote
             class="instagram-media !m-0 w-full !max-w-[400px] !min-w-0 overflow-hidden rounded-3xl bg-white"
-            data-instgrm-permalink={`https://www.instagram.com/p/${p.id}/`}
+            data-instgrm-permalink={p.url}
             data-instgrm-version="14"
           >
             <a
-              href={`https://www.instagram.com/p/${p.id}/`}
+              href={p.url}
               target="_blank"
               rel="noopener"
               class="flex aspect-[4/5] flex-col items-center justify-center gap-3 p-6 text-center font-semibold text-navy"
